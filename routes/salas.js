@@ -9,12 +9,28 @@ router.post('/', authorizeRole('admin'), async (req, res) => {
   if (!numero_sala || filas == null || columnas == null) {
     return res.status(400).json({ error: 'Faltan datos de sala' });
   }
+
   try {
+    // Crear la sala
     const [result] = await pool.query(
       'INSERT INTO sala (numero_sala, filas, columnas) VALUES (?, ?, ?)',
       [numero_sala, filas, columnas]
     );
-    res.status(201).json({ id_sala: result.insertId });
+
+    const salaId = result.insertId;
+
+    // Generar automáticamente los asientos
+    for (let fila = 1; fila <= filas; fila++) {
+      for (let columna = 1; columna <= columnas; columna++) {
+        await pool.query(
+          'INSERT INTO asiento (fila, columna, id_sala) VALUES (?, ?, ?)',
+          [fila, columna, salaId]
+        );
+      }
+    }
+
+    res.status(201).json({ id_sala: salaId, mensaje: 'Sala y asientos creados correctamente' });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Error al crear sala' });
