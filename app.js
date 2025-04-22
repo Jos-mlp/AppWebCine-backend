@@ -1,7 +1,12 @@
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors'); //Importamos cors
+
 const app = express();
+
+//Middleware para permitir peticiones desde el frontend
+app.use(cors());
 app.use(bodyParser.json());
 
 // Conexión a BD y pool

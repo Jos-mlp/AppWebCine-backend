@@ -1,1 +1,1 @@
-npm install express mysql2 bcrypt jsonwebtoken qrcode body-parser dotenv
+npm install express mysql2 bcrypt jsonwebtoken qrcode body-parser dotenv cors
