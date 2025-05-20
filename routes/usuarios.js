@@ -1,9 +1,26 @@
 const express = require('express');
-const pool = require('../db'); // Asegúrate de que la ruta a tu pool de MySQL es correcta
+const pool = require('../db'); 
 
-const router = express.Router(); // Definimos el router aquí
+const router = express.Router(); 
 
+// ------------------------------------------------------
+// Obtener todos los usuarios habilitados (estado = 1)
+// ------------------------------------------------------
+router.get('/habilitados', async (req, res) => {
+  try {
+    const [rows] = await pool.query(
+      'SELECT id_usuarios, username FROM usuario WHERE estado = 1'
+    );
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al obtener usuarios habilitados' });
+  }
+});
+
+// ------------------------------------------------------
 // Obtener usuario por ID (para mostrar username antes de eliminar)
+// ------------------------------------------------------
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
   try {
@@ -21,7 +38,9 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+// ------------------------------------------------------
 // Dar de baja usuario (admin)
+// ------------------------------------------------------
 router.put('/:id/disable', async (req, res) => {
   const { id } = req.params;
   try {
