@@ -8,5 +8,8 @@
     "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.0",
     "qrcode": "^1.5.4"
-  }
+  },
+  "scripts": {
+  "start": "node app.js"
+}
 }
