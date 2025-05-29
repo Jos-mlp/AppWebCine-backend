@@ -29,6 +29,9 @@ app.use('/funciones', authenticateToken, require('./routes/funciones'));
 app.use('/reservas', authenticateToken, require('./routes/reservas'));
 
 // Rutas de usuario (sólo admin)
+app.use('/usuarios', authenticateToken, authorizeRole('admin'), require('./routes/usuarios'));
+
+// Rutas de usuario (sólo admin)
 // Aquí se monta el router de usuarios, que incluye:
 //   GET  /usuarios/habilitados
 //   GET  /usuarios/:id
@@ -38,6 +41,16 @@ app.use(
   authenticateToken,
   authorizeRole('admin'),
   require('./routes/usuarios')
+);
+
+// ------------------------------------------------
+// NUEVA RUTA: Reporte de actividad (solo admin)
+// ------------------------------------------------
+app.use(
+  '/admin',
+  authenticateToken,
+  authorizeRole('admin'),
+  require('./routes/admin')
 );
 
 // Iniciar servidor
